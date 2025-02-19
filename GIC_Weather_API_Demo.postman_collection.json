@@ -1,0 +1,876 @@
+{
+	"info": {
+		"_postman_id": "417f4c22-1268-4c1c-a6a4-09d65164997d",
+		"name": "GIC_Weather_API_Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9123193",
+		"_collection_link": "https://nextgenapitesting.postman.co/workspace/c4c5a7ed-3e93-4537-aa3b-48a4a2a67344/collection/9123193-417f4c22-1268-4c1c-a6a4-09d65164997d?action=share&source=collection_link&creator=9123193"
+	},
+	"item": [
+		{
+			"name": "CityNameFromJSON_CSV_Files",
+			"item": [
+				{
+					"name": "ValidTC Diff DataFromJSONFile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Performance validation - Assume avg 100ms",
+									"pm.test(\"Response time is less than 300 ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"",
+									"pm.test(\"Status code name has string\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/data/2.5/weather?q={{city}}&appid={{appid}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"data",
+								"2.5",
+								"weather"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "{{city}}"
+								},
+								{
+									"key": "appid",
+									"value": "{{appid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ValidTC Diff DataFromCSVFile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Performance validation - Assume avg 100ms",
+									"pm.test(\"Response time is less than 300 ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"",
+									"pm.test(\"Status code name has string\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/data/2.5/weather?q={{city}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"data",
+								"2.5",
+								"weather"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "{{city}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ValidTestCase",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"//Performance validation - Assume avg 300ms",
+							"pm.test(\"Response time is less than 300 ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"//Validate header contains GET and POST under Access-Control-Allow-Methods",
+							"pm.test(\"Access-Control-Allow-Methods includes GET and POST\", function () {",
+							"    var allowedMethodsInResponseHeader = pm.response.headers.get(\"Access-Control-Allow-Methods\");",
+							"    pm.expect(allowedMethodsInResponseHeader).to.include(\"GET\");",
+							"    pm.expect(allowedMethodsInResponseHeader).to.include(\"POST\");",
+							"});",
+							"",
+							"pm.test(\"X-Cache-Key is present\",function(){",
+							"    var xCacheKey = pm.response.headers.get(\"X-Cache-Key\")",
+							"    pm.expect(xCacheKey).to.include(\"/data/2.5/weather?q=singapore\")",
+							"});",
+							"",
+							"pm.collectionVariables.unset(\"temp_min_value\");",
+							"pm.collectionVariables.unset(\"temp_max_value\");",
+							"pm.collectionVariables.unset(\"Pressure_value\");",
+							"pm.collectionVariables.unset(\"Humidity_value\");",
+							"",
+							"const response = pm.response.json();",
+							"",
+							"const temp_min = response.main.temp_min;",
+							"pm.collectionVariables.set(\"temp_min_value\", temp_min);",
+							"console.log(\"Temp_min is : \" + temp_min);",
+							"",
+							"const temp_max = response.main.temp_max;",
+							"pm.collectionVariables.set(\"temp_max_value\", temp_max);",
+							"console.log(\"Temp_max is : \" + temp_max);",
+							"",
+							"const pressure = response.main.pressure; ",
+							"pm.collectionVariables.set(\"Pressure_value\", pressure);",
+							"console.log(\"Pressure is : \" + pressure);",
+							"",
+							"const humidity = response.main.humidity;",
+							"pm.collectionVariables.set(\"Humidity_value\", humidity);",
+							"console.log(\"Humidity is : \" + humidity);",
+							"",
+							"const tempMin = pm.collectionVariables.get(\"temp_min_value\");",
+							"pm.test(\"Temp_min value is validated\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.main.temp_min).to.eql(tempMin);",
+							"    console.log(\"Minimum temperature value is : \" + tempMin)",
+							"});",
+							"",
+							"const tempMax = pm.collectionVariables.get(\"temp_max_value\");",
+							"pm.test(\"Temp_max value is validated\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.main.temp_max).to.eql(tempMax);",
+							"    console.log(\"Maximum temperature value is : \" + tempMax)",
+							"});",
+							"",
+							"const tempPressure = pm.collectionVariables.get(\"Pressure_value\");",
+							"pm.test(\"Pressure value is validated\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.main.pressure).to.eql(tempPressure);",
+							"    console.log(\"Pressure value is : \" + tempPressure)",
+							"});",
+							"",
+							"const tempHumidity = pm.collectionVariables.get(\"Humidity_value\");",
+							"pm.test(\"Humidity value is validated\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.main.humidity).to.eql(tempHumidity);",
+							"    console.log(\"Humidity value is : \" + tempHumidity)",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/data/2.5/weather?q={{city}}&appid={{appid}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "{{city}}"
+						},
+						{
+							"key": "appid",
+							"value": "{{appid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidTestCase_withoutBody",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "HEAD",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/data/2.5/weather?q={{city}}&appid={{appid}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "{{city}}"
+						},
+						{
+							"key": "appid",
+							"value": "{{appid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidTestCase Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"//Performance validation - Assume avg 300ms",
+							"pm.test(\"Response time is less than 300 ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"//Validate header contains GET and POST under Access-Control-Allow-Methods",
+							"pm.test(\"Access-Control-Allow-Methods includes GET and POST\", function () {",
+							"    var allowedMethodsInResponseHeader = pm.response.headers.get(\"Access-Control-Allow-Methods\");",
+							"    pm.expect(allowedMethodsInResponseHeader).to.include(\"GET\");",
+							"    pm.expect(allowedMethodsInResponseHeader).to.include(\"POST\");",
+							"});",
+							"",
+							"pm.test(\"X-Cache-Key is present\",function(){",
+							"    var xCacheKey = pm.response.headers.get(\"X-Cache-Key\")",
+							"    pm.expect(xCacheKey).to.include(\"/data/2.5/weather?q=singapore\")",
+							"});",
+							"",
+							"pm.collectionVariables.unset(\"temp_min_value\");",
+							"pm.collectionVariables.unset(\"temp_max_value\");",
+							"pm.collectionVariables.unset(\"Pressure_value\");",
+							"pm.collectionVariables.unset(\"Humidity_value\");",
+							"",
+							"const response = pm.response.json();",
+							"",
+							"const temp_min = response.main.temp_min;",
+							"pm.collectionVariables.set(\"temp_min_value\", temp_min);",
+							"console.log(\"Temp_min is : \" + temp_min);",
+							"",
+							"const temp_max = response.main.temp_max;",
+							"pm.collectionVariables.set(\"temp_max_value\", temp_max);",
+							"console.log(\"Temp_max is : \" + temp_max);",
+							"",
+							"const pressure = response.main.pressure; ",
+							"pm.collectionVariables.set(\"Pressure_value\", pressure);",
+							"console.log(\"Pressure is : \" + pressure);",
+							"",
+							"const humidity = response.main.humidity;",
+							"pm.collectionVariables.set(\"Humidity_value\", humidity);",
+							"console.log(\"Humidity is : \" + humidity);",
+							"",
+							"const tempMin = pm.collectionVariables.get(\"temp_min_value\");",
+							"pm.test(\"Temp_min value is validated\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.main.temp_min).to.eql(tempMin);",
+							"    console.log(\"Minimum temperature value is : \" + tempMin)",
+							"});",
+							"",
+							"const tempMax = pm.collectionVariables.get(\"temp_max_value\");",
+							"pm.test(\"Temp_max value is validated\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.main.temp_max).to.eql(tempMax);",
+							"    console.log(\"Maximum temperature value is : \" + tempMax)",
+							"});",
+							"",
+							"const tempPressure = pm.collectionVariables.get(\"Pressure_value\");",
+							"pm.test(\"Pressure value is validated\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.main.pressure).to.eql(tempPressure);",
+							"    console.log(\"Pressure value is : \" + tempPressure)",
+							"});",
+							"",
+							"const tempHumidity = pm.collectionVariables.get(\"Humidity_value\");",
+							"pm.test(\"Humidity value is validated\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.main.humidity).to.eql(tempHumidity);",
+							"    console.log(\"Humidity value is : \" + tempHumidity)",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/data/2.5/weather?q={{city}}&appid={{appid}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "{{city}}"
+						},
+						{
+							"key": "appid",
+							"value": "{{appid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InValid_Geocode__400 Bad Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code should be 400 Bad request\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/data/2.5/weather?appid={{appid}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "appid",
+							"value": "{{appid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCallWithoutHeader_400 Bad Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code should be 400 Bad request\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Status code should be 400 Bad request\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"host": true,
+					"user-agent": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/data/2.5/weather?q={{city}}&appid={{appid}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "{{city}}"
+						},
+						{
+							"key": "appid",
+							"value": "{{appid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCallWithoutAPIToken_401 Unauthorized",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401 since API key is NOT passed\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"",
+							"pm.test(\"As expected, body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid API key. Please see https://openweathermap.org/faq#error401 for more info.\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/data/2.5/weather?q={{city}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "{{city}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate_Options_ResponseHeader",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Access-Control-Allow-Methods includes GET and POST\", function () {",
+							"    var methods = pm.response.headers.get(\"Access-Control-Allow-Methods\");",
+							"    pm.expect(methods).to.include(\"GET\");",
+							"    pm.expect(methods).to.include(\"POST\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "OPTIONS",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/data/2.5/weather?q={{city}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "{{city}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InvalidTC_405 Method Not Allowed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405 Method Not Allowed\", function () {",
+							"    pm.response.to.have.status(405);",
+							"});",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"Method Not Allowed\");",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Internal error\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "cb9010e692fc891035b194632aaae7c5",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "appid",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						}
+					]
+				},
+				"method": "OPTIONS",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/data/2.5/weather?q={{city}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "{{city}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "in",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "appid",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "cb9010e692fc891035b194632aaae7c5",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://api.openweathermap.org"
+		},
+		{
+			"key": "city",
+			"value": "Singapore"
+		},
+		{
+			"key": "appid",
+			"value": "cb9010e692fc891035b194632aaae7c5"
+		},
+		{
+			"key": "temp_max_value",
+			"value": 299.22
+		},
+		{
+			"key": "Pressure_value",
+			"value": 1012
+		},
+		{
+			"key": "Humidity_value",
+			"value": 84
+		},
+		{
+			"key": "temp_min_value",
+			"value": ""
+		}
+	]
+}
